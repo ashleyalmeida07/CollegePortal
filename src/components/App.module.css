@@ -1,0 +1,241 @@
+/* Trade.module.css */
+
+.tradeContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    height: 100%;
+}
+
+@media (min-width: 768px) {
+    .tradeContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.tradeCard {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tradeCardHeader {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.tradeCardTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.tradeCardDescription {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.tradeChatContainer {
+    width: 100%;
+    max-width: 500px;
+    height: 100%;
+    max-height: 800px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tradeChatHeader {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.tradeMessages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: var(--secondary-color);
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tradeMessage {
+    max-width: 80%;
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    border-radius: 12px;
+    clear: both;
+    position: relative;
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.tradeMessageRight {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+    float: right;
+    margin-left: auto;
+}
+
+.tradeMessageLeft {
+    background-color: white;
+    color: var(--text-color);
+    align-self: flex-start;
+    float: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.tradeInputContainer {
+    display: flex;
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.tradeMessageInput {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #e1e5eb;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.tradeSendButton {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin-left: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 600px) {
+    .tradeChatContainer {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        border-radius: 0;
+    }
+
+    .tradeMessageInput {
+        font-size: 16px;
+    }
+}
+
+/* Course Info Section */
+.tradeCourseInfo {
+    padding: 1rem;
+}
+
+.tradeCourseSection {
+    margin-bottom: 1.5rem;
+}
+
+.tradeSectionTitle {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #111827;
+}
+
+.tradeCourseCard {
+    background: #f9fafb;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.tradeCourseTitle {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.tradeCourseDescription {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0.5rem 0;
+}
+
+.tradeBadge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: #e5e5e5;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.tradeCourseFeatures {
+    list-style-position: inside;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+.tradeCourseFeatures li {
+    margin-bottom: 0.25rem;
+}
+
+.tradeActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.tradeButton {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tradeRejectButton {
+    background: #ef4444;
+    color: white;
+}
+
+.tradeRejectButton:hover {
+    background: #dc2626;
+}
+
+.tradeAcceptButton {
+    background: #10b981;
+    color: white;
+}
+
+.tradeAcceptButton:hover {
+    background: #059669;
+}
