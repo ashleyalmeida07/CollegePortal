@@ -284,3 +284,11 @@ def manage_attendance(request):
         'students': students,
     }
     return render(request, 'updateattendance.html', context)
+
+@login_required
+def teacher_connect(request):
+    return render(request, 'teacher_connect.html')
+
+@login_required
+def message(request):
+    return render(request, 'message.html')

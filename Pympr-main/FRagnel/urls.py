@@ -31,7 +31,8 @@ urlpatterns = [
     path('manage-attendance/', manage_attendance, name='manage_attendance'),
     path('homework/', homework_page, name='homework'),
     path('homework-assign/', homework_assign, name='homework_assign'),
-
+    path('teacher-connect/', teacher_connect, name='teacher_connect'),
+    path('message/', message, name='message'),
 
 
 ]
