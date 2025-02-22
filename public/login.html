@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="form__container signup__container">
+        <form id="signupForm">
+          <h1>Create Account</h1>
+          <span>or use your email for registration</span>
+          <div class="form__group">
+            <input type="text" name="name" placeholder="Name" required />
+          </div>
+          <div class="form__group">
+            <input type="email" name="email" placeholder="Email" required />
+          </div>
+          <div class="form__group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <button type="submit">SIGN UP</button>
+        </form>
+      </div>
+      <div class="form__container signin__container">
+        <form id="signinForm">
+          <h1>Sign in</h1>
+          <span>or use your account</span>
+          <div class="form__group">
+            <input type="email" name="email" placeholder="Email" required />
+          </div>
+          <div class="form__group">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <a href="#" class="forgot__password">Forgot your password?</a>
+          <button type="submit"><a href="form.html">SIGN IN</a></button>
+        </form>
+      </div>
+      <div class="overlay__container" id="overlayContainer">
+        <div class="overlay__wrapper">
+          <div class="overlay__panel overlay__panel__left">
+            <h1>Welcome Back!</h1>
+            <p>
+              To keep connected with us please login with your personal info
+            </p>
+            <button id="switchToSignin">SIGN IN</button>
+          </div>
+          <div class="overlay__panel overlay__panel__right">
+            <h1>Hello, Friend!</h1>
+            <p>Enter your personal details and start your journey with us</p>
+            <button id="switchToSignup">SIGN UP</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Handle SIGN UP form submission
+signupForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(signupForm);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    const response = await fetch("http://localhost:5000/signup", {  // URL to Flask signup route
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert("Signup successful! Welcome, " + result.user.name);
+    } else {
+      alert("Error: " + result.error);
+    }
+  } catch (err) {
+    console.error("Signup error:", err);
+    alert("Failed to sign up. Please try again later.");
+  }
+});
+
+// Handle SIGN IN form submission
+signinForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const formData = new FormData(signinForm);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    const response = await fetch("http://localhost:5000/signin", {  // URL to Flask signin route
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert("Signin successful! Welcome back, " + result.user.name);
+    } else {
+      alert("Error: " + result.error);
+    }
+  } catch (err) {
+    console.error("Signin error:", err);
+    alert("Failed to sign in. Please try again later.");
+  }
+});
+
+
+      // Handle SIGN IN form submission
+      signinForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(signinForm);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          const response = await fetch("http://localhost:5000/signin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            alert("Signin successful! Welcome back, " + result.user.name);
+          } else {
+            alert("Error: " + result.error);
+          }
+        } catch (err) {
+          console.error("Signin error:", err);
+          alert("Failed to sign in. Please try again later.");
+        }
+      });
+
+      // Toggle between sign-in and sign-up views
+      document.getElementById("switchToSignin").addEventListener("click", () => {
+        container.classList.remove("right__panel__active");
+      });
+
+      document.getElementById("switchToSignup").addEventListener("click", () => {
+        container.classList.add("right__panel__active");
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+ @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+  --primary-color: #27b397;
+  --text-dark: #0f172a;
+  --text-light: #94a3b8;
+  --extra-light: #f8fafc;
+  --white: #ffffff;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.container {
+  height: 100vh;
+  position: relative;
+  background-color: var(--white);
+  overflow: hidden;
+}
+
+.form__container {
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  padding: 2rem;
+  transition: 0.6s ease-in-out;
+}
+
+a{
+  all:unset;
+}
+.signup__container {
+  opacity: 0;
+  z-index: 1;
+}
+
+.signin__container {
+  z-index: 2;
+}
+
+form {
+  height: 100%;
+  max-width: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+form h1 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.socials a {
+  padding: 5px 12px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  border: 1px solid var(--text-light);
+  border-radius: 100%;
+}
+
+form span {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.form__group {
+  position: relative;
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background-color: var(--extra-light);
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.forgot__password {
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--text-light);
+}
+
+.form__container button {
+  padding: 0.75rem 4rem;
+  margin-top: 2rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--white);
+  border-radius: 2rem;
+  background-color: var(--primary-color);
+  cursor: pointer;
+}
+
+.overlay__container {
+  position: absolute;
+  top: 0;
+  left: 60%;
+  height: 100%;
+  width: 40%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 10;
+}
+
+.overlay__wrapper {
+  background: url("assets/57-bg.png");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  color: var(--white);
+  left: -150%;
+  height: 100%;
+  width: 250%;
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay__panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 4rem;
+  text-align: center;
+  height: 100%;
+  width: 40%;
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlay__panel__left {
+  right: 60%;
+  transform: translateX(-12%);
+}
+
+.overlay__panel__right {
+  right: 0;
+  transform: translateX(0);
+}
+
+.overlay__panel h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.overlay__panel p {
+  max-width: 350px;
+  margin: 0 auto;
+  line-height: 2rem;
+}
+
+.overlay__panel button {
+  padding: 0.75rem 4rem;
+  margin-top: 2rem;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: var(--white);
+  border-radius: 2rem;
+  background-color: transparent;
+}
+
+#overlayBtn {
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  top: 432px;
+  transform: translateX(-50%);
+  width: 10rem;
+  height: 3rem;
+  border: 1px solid var(--white);
+  background: transparent;
+  border-radius: 2rem;
+}
+
+.right__panel__active .overlay__container {
+  transform: translateX(-150%);
+}
+
+.right__panel__active .overlay__wrapper {
+  transform: translateX(50%);
+}
+
+.right__panel__active .overlay__panel__left {
+  transform: translateX(25%);
+}
+
+.right__panel__active .overlay__panel__right {
+  transform: translateX(35%);
+}
+
+.right__panel__active .signin__container {
+  transform: translateX(20%);
+  opacity: 0;
+}
+
+.right__panel__active .signup__container {
+  transform: translateX(65%);
+  opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
+}
+
+@keyframes show {
+  0%,
+  50% {
+    opacity: 0;
+    z-index: 1;
+  }
+  51%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+.scale__btn-animation {
+  animation: scale-animation 0.6s;
+}
+
+@keyframes scale-animation {
+  0% {
+    width: 10rem;
+  }
+  50% {
+    width: 20rem;
+  }
+  100% {
+    width: 10rem;
+  }
+}
+
+
+</style>

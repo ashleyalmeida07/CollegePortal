@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
+        rel="stylesheet"
+    />
+    <title>User Profile Form</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+        :root {
+            --primary-color: #27b397;
+            --text-dark: #0f172a;
+            --text-light: #94a3b8;
+            --extra-light: #f8fafc;
+            --white: #ffffff;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: var(--extra-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .form__container {
+            padding: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        form h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .form__group {
+            position: relative;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background-color: var(--extra-light);
+            border-bottom: 1px solid var(--primary-color);
+            font-family: "Poppins", sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .skills__container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .skill__tag {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill__tag button {
+            background: none;
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button[type="submit"] {
+            padding: 0.75rem 4rem;
+            margin-top: 1rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: var(--white);
+            border-radius: 2rem;
+            background-color: var(--primary-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            align-self: center;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #229e84;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form__container">
+            <form id="userProfileForm">
+                <h1>User Profile</h1>
+                <div class="form__group">
+                    <input type="text" id="name" name="name" placeholder="Name" required />
+                </div>
+                <div class="form__group">
+                    <input type="email" id="email" name="email" placeholder="Email" required />
+                </div>
+                <div class="form__group">
+                    <input type="tel" id="phone" name="phone" placeholder="Phone Number" required />
+                </div>
+                <div class="form__group">
+                    <input type="text" id="location" name="location" placeholder="Location" required />
+                </div>
+                <div class="form__group">
+                    <input type="text" id="skillInput" placeholder="Add a skill (max 4)" />
+                    <div class="skills__container" id="skillsContainer"></div>
+                </div>
+                <div class="form__group">
+                    <textarea id="description" name="description" placeholder="Tell us about yourself" required></textarea>
+                </div>
+                <button type="submit" onclick="window.location.href = '/header.jsx'">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('userProfileForm');
+            const skillInput = document.getElementById('skillInput');
+            const skillsContainer = document.getElementById('skillsContainer');
+            let skills = [];
+
+            skillInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addSkill();
+                }
+            });
+
+            function addSkill() {
+                const skill = skillInput.value.trim();
+                if (skill && skills.length < 4) {
+                    skills.push(skill);
+                    renderSkills();
+                    skillInput.value = '';
+                }
+                if (skills.length >= 4) {
+                    skillInput.disabled = true;
+                }
+            }
+
+            function removeSkill(index) {
+                skills.splice(index, 1);
+                renderSkills();
+                skillInput.disabled = false;
+            }
+
+            function renderSkills() {
+                skillsContainer.innerHTML = '';
+                skills.forEach((skill, index) => {
+                    const skillTag = document.createElement('div');
+                    skillTag.classList.add('skill__tag');
+                    skillTag.innerHTML = `
+                        ${skill}
+                        <button type="button" onclick="removeSkill(${index})">×</button>
+                    `;
+                    skillsContainer.appendChild(skillTag);
+                });
+            }
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    location: document.getElementById('location').value,
+                    skills: skills,
+                    description: document.getElementById('description').value,
+                };
+
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/save-profile', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
+
+                    if (response.ok) {
+                        alert('Profile saved successfully!');
+                        window.location.href = 'profile.html'; // Redirect to profile page
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to save profile');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert(error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

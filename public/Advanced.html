@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Trade Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100%;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            height: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .card-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        :root {
+            --primary-color: #27b397;
+            --secondary-color: #f1f5f9;
+            --text-color: #333;
+            --background-color: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overscroll-behavior-y: contain;
+            touch-action: manipulation;
+        }
+
+        #chat-container {
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            max-height: 800px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #chat-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .message {
+            max-width: 80%;
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            clear: both;
+            position: relative;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .message.right {
+            background-color: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+            float: right;
+            margin-left: auto;
+        }
+
+        .message.left {
+            background-color: white;
+            color: var(--text-color);
+            align-self: flex-start;
+            float: left;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        #input-container {
+            display: flex;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            flex-shrink: 0;
+        }
+
+        #message {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #e1e5eb;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #send-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-left: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+ 
+
+
+
+    .file-input {
+      margin-bottom: 15px;
+    }
+
+    .share-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #007bff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .share-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .share-btn:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+
+        @media screen and (max-width: 600px) {
+            body {
+                align-items: stretch;
+            }
+
+            #chat-container {
+                width: 100%;
+                height: 100%;
+                max-width: none;
+                max-height: none;
+                border-radius: 0;
+            }
+
+            #message {
+                font-size: 16px;
+            }
+        }
+        /* Course Info Section */
+        .course-info {
+            padding: 1rem;
+        }
+
+        .course-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+
+        .course-card {
+            background: #f9fafb;
+            border: 1px solid #e5e5e5;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .course-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .course-description {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0.5rem 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: #e5e5e5;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .course-features {
+            list-style-position: inside;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        .course-features li {
+            margin-bottom: 0.25rem;
+        }
+
+        .trade-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .trade-button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .reject-button {
+            background: #ef4444;
+            color: white;
+        }
+
+        .reject-button:hover {
+            background: #dc2626;
+        }
+
+        .accept-button {
+            background: #10b981;
+            color: white;
+        }
+
+        .accept-button:hover {
+            background: #059669;
+        }
+
+        button {
+    padding: 15px ;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.file-upload-container {
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.file-upload-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.file-upload-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.file-upload-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.file-upload-header p {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.file-upload-content {
+  padding: 1.5rem;
+}
+
+.file-input-wrapper {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.file-input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 2px dashed #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.file-input-label:hover {
+  border-color: #27b397;
+  background: #f0fdf4;
+}
+
+.upload-icon, .share-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  color: #6b7280;
+}
+
+.file-info {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: #f3f4f6;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: #374151;
+  display: none;
+}
+
+.file-info.visible {
+  display: block;
+}
+
+.share-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background: #27b397;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.share-button:hover:not(:disabled) {
+  background: #229e84;
+}
+
+.share-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.share-button .share-icon {
+  color: currentColor;
+}
+
+@media (max-width: 640px) {
+  .file-upload-container {
+    padding: 1rem;
+  }
+  
+  .file-upload-header,
+  .file-upload-content {
+    padding: 1rem;
+  }
+  
+  .file-input-label {
+    padding: 1.5rem;
+  }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Chat Section -->
+        <div id="chat-container">
+            <div class="card-header">
+                <h2 class="card-title">Chat</h2>
+                <p class="card-description">Discuss course trade details</p>
+                <a href="https://meet.google.com/landing" target="blank"> <button id="startBtn">Start Meeting</button></a>
+
+            </div>
+
+            <div id="messages"></div>
+            <div id="input-container">
+                <input type="text" id="message" placeholder="Type a message...">
+                <button id="send-btn" onclick="sendMessage()">
+                    Send <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Course Info Section -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Course Information</h2>
+                <p class="card-description">Review and manage course trade</p>
+            </div>
+            <div class="course-info">
+                <div class="course-section">
+                    <h3 class="section-title">Your Trade</h3>
+                    <div class="course-card">
+                        <h4 class="course-title">Advanced HTML and CSS</h4>
+                        <p class="course-description">Master HTML and CSS with advanced concepts and real-world applications</p>
+                        <span class="badge">40 hours</span>
+                        <ul class="course-features">
+                            <li>Advanced type system features</li>
+                            <li>Generics and utility types</li>
+                            <li>HTML and CSS with React</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="course-section">
+                    <h3 class="section-title">Offered Trade</h3>
+                    <div class="course-card">
+                        <h4 class="course-title">Advanced React</h4>
+                        <p class="course-description">Deep dive into React with advanced patterns and performance optimization</p>
+                        <span class="badge">35 hours</span>
+                        <ul class="course-features">
+                            <li>Advanced hooks and patterns</li>
+                            <li>Performance optimization</li>
+                            <li>State management</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="trade-actions">
+                    <button class="trade-button reject-button">
+                        ✕ Reject Trade
+                    </button>
+                    <button class="trade-button accept-button">
+                        ✓ Accept Trade
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="file-upload-container">
+        <div class="file-upload-card">
+          <div class="file-upload-header">
+            <h2>Share Course Materials</h2>
+            <p>Upload and share files with your trade partner</p>
+          </div>
+          
+          <div class="file-upload-content">
+            <div class="file-input-wrapper">
+              <input type="file" id="fileInput" class="file-input" />
+              <label for="fileInput" class="file-input-label">
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <span>Choose a file</span>
+              </label>
+            </div>
+            
+            <div id="fileInfo" class="file-info"></div>
+            
+            <button id="shareBtn" class="share-button" disabled>
+              <svg class="share-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16 6 12 2 8 6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+              </svg>
+              Share File
+            </button>
+          </div>
+        </div>
+      </div>
+    
+</body>
+</html>
+
+<script>
+      const ws = new WebSocket('wss://chat-app-yttg.onrender.com');
+
+ws.onmessage = async (event) => {
+    const messageContainer = document.getElementById('messages');
+    const message = document.createElement('div');
+    message.classList.add('message', 'left');
+    
+    message.textContent = event.data instanceof Blob 
+        ? await event.data.text() 
+        : event.data;
+    
+    messageContainer.appendChild(message);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+};
+
+const sendMessage = () => {
+    const input = document.getElementById('message');
+    if (input.value) {
+        const messageContainer = document.getElementById('messages');
+        
+        const message = document.createElement('div');
+        message.classList.add('message', 'right');
+        message.textContent = input.value;
+        messageContainer.appendChild(message);
+        
+        ws.send(input.value);
+        input.value = '';
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+};
+
+document.getElementById('message').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+// Prevent zooming on input focus for mobile
+document.getElementById('message').addEventListener('focus', () => {
+    document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+});
+
+document.getElementById('message').addEventListener('blur', () => {
+    document.querySelector('meta[name="viewport"]').setAttribute('content', 'width=device-width, initial-scale=1.0');
+});
+
+
+const fileInput = document.getElementById("fileInput");
+    const shareBtn = document.getElementById("shareBtn");
+
+    // Enable the share button when a file is selected
+    fileInput.addEventListener("change", () => {
+      shareBtn.disabled = !fileInput.files.length;
+    });
+
+    // Share the file when the button is clicked
+    shareBtn.addEventListener("click", async () => {
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Please select a file to share.");
+        return;
+      }
+
+      if (navigator.share) {
+        try {
+          const fileToShare = new File([file], file.name, { type: file.type });
+          await navigator.share({
+            files: [fileToShare],
+            title: "Share File",
+            text: "Check out this file!",
+          });
+          alert("File shared successfully!");
+        } catch (error) {
+          console.error("Error sharing file:", error);
+        }
+      } else {
+        alert("Your browser does not support the Web Share API.");
+      }
+    });
+
+</script>
