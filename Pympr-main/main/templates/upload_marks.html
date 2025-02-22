@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Upload Marks - College Portal{% endblock %}
+
+{% block start %}
+<main class="py-4">
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">Upload Student Marks</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label class="form-label">Select Student</label>
+                        {{ form.student }}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Select Subject</label>
+                        {{ form.subject }}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Select Exam</label>
+                        {{ form.exam_type }}
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Enter Marks</label>
+                        {{ form.marks }}
+                        <div id="maxMarks" class="form-text">Max marks: <span id="maxMarksValue">20</span></div>
+                        {{ form.marks.errors }}
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Upload Marks</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+document.getElementById('id_exam_type').addEventListener('change', function() {
+    const maxMarks = {
+        'ISE1': 20,
+        'ISE2': 20,
+        'MSE': 30,
+        'ESE': 30
+    };
+    document.getElementById('maxMarksValue').textContent = maxMarks[this.value];
+});
+</script>
+{% endblock %}

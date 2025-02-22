@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block title %}Homework-assign - College Portal{% endblock %}
+
+{% block start %}
+
+    <style>
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .teacher-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .teacher-main {
+            max-width: 2200px;
+            margin: 80px;
+            padding: 2rem;
+        }
+
+        .assignment-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .assignments-list {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .assignment-item {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .assignment-item:last-child {
+            border-bottom: none;
+        }
+
+        .btn-primary {
+            background: #1a73e8;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+<body>
+
+    <main class="teacher-main">
+        <section class="assignment-form">
+            <h2>Assign Homework</h2>
+            <form>
+                <div class="form-group">
+                    <label for="title">Assignment Title</label>
+                    <input type="text" id="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="due-date">Due Date</label>
+                    <input type="date" id="due-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="class">Assign to Class</label>
+                    <select id="class" required>
+                        <option>Web Development</option>
+                        <option>Data Structures</option>
+                        <option>Data Management</option>
+                        <option>React Development</option>
+                        <option>Java Programming</option>
+                        <option>Python Programming</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Assign</button>
+            </form>
+        </section>
+
+        <section class="assignments-list">
+            <h2>Previously Assigned Homework</h2>
+            <div class="assignment-item">
+                <h3>JavaScript Basics</h3>
+                <p>Due: March 1, 2024</p>
+            </div>
+            <div class="assignment-item">
+                <h3>Data Structures Quiz</h3>
+                <p>Due: March 3, 2024</p>
+            </div>
+        </section>
+    </main>
+</body>
+
+{% endblock %}
