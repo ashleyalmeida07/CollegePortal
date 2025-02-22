@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}Upload Attendance - College Portal{% endblock %}
+
+{% block start %}
+<main class="py-4">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card bg-primary text-white shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h2 class="card-title mb-0">
+                                    <i class="bi bi-calendar-plus me-2"></i>Upload Attendance
+                                </h2>
+                                <p class="mt-2 mb-0">Mark attendance for today's class</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-md-end mt-3 mt-md-0">
+                                    <h3 class="mb-0">{{ subject.name }}</h3>
+                                    <p class="mb-0">{% now "F d, Y" %}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-people text-success fs-1"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="text-muted mb-1">Total Students</h6>
+                                <h3 class="mb-0">{{ students|length }}</h3>
+                                <small class="text-muted">In Class</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-clock-history text-primary fs-1"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3 flex-time" style="display:flex; flex-direction:row;">
+                                <div>
+                                <h6 class="text-muted mb-1">Current Time</h6>
+                                <h3 class="mb-0" id="currentTime">
+                                    <script>
+                                        document.getElementById("currentTime").innerText = new Date().toLocaleTimeString();
+                                        setInterval(() => {
+                                            document.getElementById("currentTime").innerText = new Date().toLocaleTimeString();
+                                        }, 1000);
+                                    </script>
+                                </h3>
+                                </div>
+                                <!-- <small class="text-muted">Class Time</small> -->
+                                <div style="margin-left:40px;">
+                                    <h6 class="text-muted mb-1">Class Time</h6>
+                                    <h3><input type="time" style="width:150px;"></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-calendar2-week text-warning fs-1"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="text-muted mb-1">Session</h6>
+                                <h3 class="mb-0">{{ subject.code }}</h3>
+                                <small class="text-muted">Subject Code</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Form -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="card-title mb-0">Mark Attendance</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Roll Number</th>
+                                            <th>Student Name</th>
+                                            <th>Status</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for student in students %}
+                                        <tr>
+                                            <td>{{ student.roll_number }}</td>
+                                            <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                                            <td>
+                                                <select name="attendance_{{ student.id }}" class="form-select form-select-sm">
+                                                    <option value="present">Present</option>
+                                                    <option value="absent">Absent</option>
+                                                    <option value="late">Late</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="notes_{{ student.id }}" class="form-control form-control-sm" placeholder="Optional notes">
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted">
+                                                No students found in this class.
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-save me-2"></i>Save Attendance
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

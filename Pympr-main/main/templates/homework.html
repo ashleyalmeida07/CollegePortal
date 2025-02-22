@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block title %}Homework - College Portal{% endblock %}
+{% load static %}
+
+{% block start %}
+<link rel="stylesheet" href="{% static 'css/homework.css' %}">
+
+<body>
+
+    <main class="home-wrapper">
+
+        <div class="home-main-content">
+            <div class="home-grid-container">
+                <div class="home-course-box">
+                    <div class="home-course-header">
+                        <h3 class="home-course-title">Web Development</h3>
+                        <p class="home-course-teacher">Prof. Jason Gonsalves</p>
+                    </div>
+                    <div class="home-course-body">
+                        <div class="home-course-info">
+                            <span>25 Students</span>
+                            <span>•</span>
+                            <span>15 Assignments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-course-box">
+                    <div class="home-course-header">
+                        <h3 class="home-course-title">Data Structures</h3>
+                        <p class="home-course-teacher">Prof. Jaden Britto</p>
+                    </div>
+                    <div class="home-course-body">
+                        <div class="home-course-info">
+                            <span>30 Students</span>
+                            <span>•</span>
+                            <span>12 Assignments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-course-box">
+                    <div class="home-course-header">
+                        <h3 class="home-course-title">Data Management</h3>
+                        <p class="home-course-teacher">Prof. Elson Machado</p>
+                    </div>
+                    <div class="home-course-body">
+                        <div class="home-course-info">
+                            <span>28 Students</span>
+                            <span>•</span>
+                            <span>10 Assignments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-course-box">
+                    <div class="home-course-header">
+                        <h3 class="home-course-title">React Js</h3>
+                        <p class="home-course-teacher">Prof. Ashley Almeida</p>
+                    </div>
+                    <div class="home-course-body">
+                        <div class="home-course-info">
+                            <span>28 Students</span>
+                            <span>•</span>
+                            <span>10 Assignments</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="home-course-box">
+                    <div class="home-course-header">
+                        <h3 class="home-course-title">Java</h3>
+                        <p class="home-course-teacher">Prof. Royce Dmonte</p>
+                    </div>
+                    <div class="home-course-body">
+                        <div class="home-course-info">
+                            <span>28 Students</span>
+                            <span>•</span>
+                            <span>10 Assignments</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="home-task-section">
+                <div class="home-task-header">
+                    <h2>Recent Assignments</h2>
+                    <button class="home-button home-button-primary">Create New</button>
+                </div>
+                <div class="home-task-list">
+                    <div class="home-task-item">
+                        <div class="home-task-details">
+                            <div class="home-task-icon">📝</div>
+                            <div>
+                                <h4>JavaScript Basics</h4>
+                                <p>Due: March 1, 2024</p>
+                            </div>
+                        </div>
+                        <button class="home-button home-button-outline">View Details</button>
+                    </div>
+
+                    <div class="home-task-item">
+                        <div class="home-task-details">
+                            <div class="home-task-icon">📊</div>
+                            <div>
+                                <h4>Data Structures Quiz</h4>
+                                <p>Due: March 3, 2024</p>
+                            </div>
+                        </div>
+                        <button class="home-button home-button-outline">View Details</button>
+                    </div>
+
+                    <div class="home-task-item">
+                        <div class="home-task-details">
+                            <div class="home-task-icon">💻</div>
+                            <div>
+                                <h4>SQL Project</h4>
+                                <p>Due: March 5, 2024</p>
+                            </div>
+                        </div>
+                        <button class="home-button home-button-outline">View Details</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+{% endblock %}

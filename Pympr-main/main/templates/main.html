@@ -1,0 +1,543 @@
+{% extends 'base.html' %} {% block title %}Home - College Portal{% endblock %}
+{% block start %}
+<style>
+  /* Core card styles */
+  .glass-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .glass-card:hover {
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Notification card styles */
+  .notification-card {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border-left: 4px solid transparent;
+  }
+
+  .notification-card:hover {
+    transform: translateX(4px);
+    background-color: #f8fafc;
+  }
+
+  .notification-card.important {
+    border-left-color: #ef4444;
+  }
+
+  .notification-card.new {
+    border-left-color: #4f46e5;
+  }
+
+  .notification-card.event {
+    border-left-color: #10b981;
+  }
+
+  /* Button styles */
+  .auth-button {
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .auth-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Badge animation */
+  .animate-badge {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  /* Header section */
+  .header-section {
+    background: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 1.25rem;
+  }
+
+  /* Status badges */
+  .status-badge {
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .status-badge-important {
+    background-color: #fef2f2;
+    color: #ef4444;
+  }
+
+  .status-badge-new {
+    background-color: #eef2ff;
+    color: #4f46e5;
+  }
+
+  .status-badge-event {
+    background-color: #ecfdf5;
+    color: #10b981;
+  }
+  .but a {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    border: 2px solid #fefefe;
+    text-transform: uppercase;
+    color: #212121;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .but a::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% - 12px);
+    background-color: #fefefe;
+    transition: 0.3s ease-in-out;
+    transform: scaleY(1);
+  }
+
+  .but a:hover::before {
+    transform: scaleY(0);
+  }
+
+  .but a::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: -2px;
+    height: calc(100% + 4px);
+    width: calc(100% - 12px);
+    background-color: #fefefe;
+    transition: 0.3s ease-in-out;
+    transform: scaleX(1);
+    transition-delay: 0.5s;
+  }
+
+  .but a:hover::after {
+    transform: scaleX(0);
+  }
+
+  .but span {
+    position: relative;
+    z-index: 3;
+  }
+
+  .but {
+    background-color: none;
+    text-decoration: none;
+    background-color: #fefefe;
+    border: none;
+  }
+
+  .workshop-section {
+    background-color: white;
+    padding: 3rem 0;
+    margin-top: 3rem;
+  }
+
+  .workshop-list {
+    margin-top: 2rem;
+  }
+
+  .workshop-item {
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s;
+  }
+
+  .workshop-item:hover {
+    background-color: #f0f0f0;
+  }
+
+  .workshop-title {
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .workshop-date {
+    color: #0d6efd;
+    font-weight: 600;
+  }
+
+  .countdown-timer {
+    background-color: #0d6efd;
+    color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .countdown-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+
+  .header {
+    background: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .logo img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .auth-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background: #0066ff;
+    color: white;
+  }
+
+  .btn-secondary {
+    color: #333;
+  }
+
+  /* Main Content */
+  .main-content {
+    margin-top: 80px;
+    padding: 2rem;
+  }
+
+  .hero-section {
+    text-align: center;
+    padding: 4rem 1rem;
+    background: rgb(2, 0, 36);
+    background: radial-gradient(
+      circle,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(9, 9, 121, 1) 61%,
+      rgba(0, 212, 255, 1) 100%
+    );
+  }
+
+  .hero-section h1 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .hero-section p {
+    color: white;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+</style>
+
+<main class="min-h-screen bg-white py-8">
+  <div class="container mx-auto px-4">
+    
+
+    <section class="hero-section">
+      <h1>Welcome to College Portal</h1>
+      <p>
+        Your one-stop solution for managing academic life. Access attendance,
+        check marks, and stay updated with college announcements all in one
+        place.
+      </p>
+    </section>
+
+    <!-- Notifications Section -->
+    <div class="max-w-3xl mx-auto">
+      <div class="glass-card rounded-xl overflow-hidden">
+        <!-- Header -->
+        <div class="header-section">
+          <div class="flex items-center justify-between">
+            <h2 class="text-xl font-bold text-gray-900">College Updates</h2>
+            <span
+              class="status-badge bg-indigo-100 text-indigo-600 animate-badge"
+            >
+              Latest News
+            </span>
+          </div>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="divide-y divide-gray-100">
+          <!-- Important Notice -->
+          <div class="notification-card important p-5">
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-gray-900">
+                  ISE 2 Schedule Announced
+                </h3>
+                <span class="status-badge status-badge-important">
+                  Important
+                </span>
+              </div>
+              <p class="mt-2 text-gray-600">
+                Examinations will commence from next week. Check your hall
+                tickets and schedule.
+              </p>
+              <div class="mt-3 text-sm text-gray-500">2 hours ago</div>
+            </div>
+          </div>
+
+          <!-- Regular Updates -->
+          <div class="notification-card new p-5">
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-gray-900">Marks Updated</h3>
+                <span class="status-badge status-badge-new"> New </span>
+              </div>
+              <p class="mt-2 text-gray-600">
+                Mathematics ISE 2 marks have been updated. Check your results in
+                the portal.
+              </p>
+              <div class="mt-3 text-sm text-gray-500">3 days ago</div>
+            </div>
+          </div>
+
+          <!-- Event Update -->
+          <div class="notification-card event p-5">
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <h3 class="text-base font-bold text-gray-900">
+                  Technical Symposium
+                </h3>
+                <span class="status-badge status-badge-event"> Event </span>
+              </div>
+              <p class="mt-2 text-gray-600">
+                Annual technical symposium registration is now open. Register
+                before seats fill up!
+              </p>
+              <div class="mt-3 text-sm text-gray-500">1 week ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Webinar -->
+  <div class="workshop-section" id="workshops">
+    <div class="container">
+      <h2 class="section-title">Upcoming Workshops</h2>
+      <p style="text-align: center; margin-bottom: 2rem">
+        Join our free online workshops to get a taste of our teaching approach.
+      </p>
+
+      <div
+        id="currentTime"
+        style="text-align: center; font-weight: bold; margin-bottom: 1rem"
+      ></div>
+
+      <div class="workshop-list" id="workshopList"></div>
+
+      <div class="countdown-timer">
+        <p>Next workshop starts in:</p>
+        <div id="countdown" class="countdown-display">00:00:00</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class Workshop {
+      constructor(title, date, instructor, spots) {
+        this.title = title;
+        this.date = new Date(date);
+        this.instructor = instructor;
+        this.spotsAvailable = spots;
+      }
+
+      formatDate() {
+        const options = {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        };
+        return this.date.toLocaleDateString("en-US", options);
+      }
+
+      getDaysUntil() {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const timeDiff = this.date.getTime() - today.getTime();
+        return Math.ceil(timeDiff / (1000 * 3600 * 24));
+      }
+    }
+
+    const workshops = [
+      new Workshop(
+        "React Workshop",
+        "2025-09-15T14:00:00",
+        "Ashley Almedia",
+        50
+      ),
+      new Workshop(
+        "Node.js Basics",
+        "2025-09-20T10:00:00",
+        "Serene Dmello",
+        30
+      ),
+      new Workshop(
+        "Python for Beginners",
+        "2025-09-25T15:00:00",
+        "Elson Machado",
+        40
+      ),
+    ];
+
+    // Function to update current time
+    const updateCurrentTime = () => {
+      try {
+        const now = new Date();
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        };
+        const currentTimeElement = document.getElementById("currentTime");
+        if (currentTimeElement) {
+          currentTimeElement.textContent = `Current Time: ${now.toLocaleString(
+            "en-US",
+            options
+          )}`;
+        }
+      } catch (error) {
+        console.error("Error updating time:", error);
+      }
+    };
+
+    // Function to update countdown timer
+    const updateCountdown = () => {
+      try {
+        const now = new Date();
+
+        // Find the next upcoming workshop
+        const upcomingWorkshops = workshops.filter(
+          (workshop) => workshop.date > now
+        );
+        if (upcomingWorkshops.length === 0) {
+          document.getElementById("countdown").textContent =
+            "No upcoming workshops!";
+          return;
+        }
+
+        const nextWorkshop = upcomingWorkshops[0].date;
+        const timeLeft = nextWorkshop - now;
+
+        if (timeLeft < 0) {
+          document.getElementById("countdown").textContent =
+            "Workshop has started!";
+          return;
+        }
+
+        // Calculate time components
+        const hours = String(
+          Math.floor((timeLeft / (1000 * 60 * 60)) % 24)
+        ).padStart(2, "0");
+        const minutes = String(
+          Math.floor((timeLeft / (1000 * 60)) % 60)
+        ).padStart(2, "0");
+        const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(
+          2,
+          "0"
+        );
+
+        document.getElementById(
+          "countdown"
+        ).textContent = `${hours}:${minutes}:${seconds}`;
+      } catch (error) {
+        console.error("Error updating countdown:", error);
+      }
+    };
+
+    // Render the list of workshops
+    const workshopList = document.getElementById("workshopList");
+    workshops.forEach((workshop) => {
+      const item = document.createElement("div");
+      item.className = "workshop-item";
+      item.innerHTML = `
+        <div>
+          <h4 class="workshop-title">${workshop.title}</h4>
+          <p class="workshop-date">${workshop.formatDate()}</p>
+        </div>
+        <div>
+          <p>Hosted by ${workshop.instructor}</p>
+          <p>Spots available: ${workshop.spotsAvailable}</p>
+          <p>${workshop.getDaysUntil()} days left</p>
+        </div>
+      `;
+      workshopList.appendChild(item);
+    });
+
+    // Initialize timers
+    updateCurrentTime();
+    updateCountdown();
+    setInterval(updateCurrentTime, 1000);
+    setInterval(updateCountdown, 1000);
+  </script>
+</main>
+{% endblock %}

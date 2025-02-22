@@ -1,0 +1,452 @@
+{% extends 'base.html' %}
+{% block title %}Teacher-Chat - College Portal{% endblock %}
+
+{% block start %}
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .platform-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+        }
+
+        #messages {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            background-color: white;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 15px;
+            border-radius: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        .message.left {
+            background-color: #f1f0f0;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+
+        .message.right {
+            background-color: var(--secondary-color);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .subject-nav {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .subject-nav .nav-link {
+            color: var(--primary-color);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .subject-nav .nav-link.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .teacher-card {
+            transition: transform 0.2s;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .teacher-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .status-online {
+            background-color: #2ecc71;
+        }
+
+        .status-offline {
+            background-color: #95a5a6;
+        }
+
+        .subject-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .teacher-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid platform-container">
+        <div class="row">
+            <!-- Subject Navigation -->
+            <div class="col-md-3">
+                <div class="subject-nav shadow">
+                    <h4 class="mb-4">My Subjects</h4>
+                    <div class="nav flex-column">
+                        <a class="nav-link active" href="#" data-subject="data-structures">
+                            <i class="fas fa-network-wired subject-icon"></i>
+                            Data Structures
+                            <span class="badge bg-primary float-end">3</span>
+                        </a>
+                        <a class="nav-link" href="#" data-subject="data-management">
+                            <i class="fas fa-database subject-icon"></i>
+                            Data Management
+                            <span class="badge bg-primary float-end">2</span>
+                        </a>
+                        <a class="nav-link" href="#" data-subject="java">
+                            <i class="fab fa-java subject-icon"></i>
+                            Java Programming
+                            <span class="badge bg-primary float-end">4</span>
+                        </a>
+                        <a class="nav-link" href="#" data-subject="python">
+                            <i class="fab fa-python subject-icon"></i>
+                            Python Programming
+                            <span class="badge bg-primary float-end">2</span>
+                        </a>
+                        <a class="nav-link" href="#" data-subject="mathematics">
+                            <i class="fas fa-square-root-alt subject-icon"></i>
+                            Mathematics
+                            <span class="badge bg-primary float-end">3</span>
+                        </a>
+                    </div>
+
+                    <h5 class="mt-4 mb-3">Available Teachers</h5>
+                    <div class="teacher-list">
+                        <div class="teacher-card card mb-2">
+                            <div class="card-body p-2">
+                                <div class="d-flex align-items-center">
+                                    <img src="/api/placeholder/40/40" class="rounded-circle me-2">
+                                    <div>
+                                        <h6 class="mb-0">Dr. Smith</h6>
+                                        <small class="text-muted">Data Structures</small>
+                                        <span class="status-indicator status-online"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="teacher-card card mb-2">
+                            <div class="card-body p-2">
+                                <div class="d-flex align-items-center">
+                                    <img src="/api/placeholder/40/40" class="rounded-circle me-2">
+                                    <div>
+                                        <h6 class="mb-0">Prof. Johnson</h6>
+                                        <small class="text-muted">Java Programming</small>
+                                        <span class="status-indicator status-online"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="teacher-card card mb-2">
+                            <div class="card-body p-2">
+                                <div class="d-flex align-items-center">
+                                    <img src="/api/placeholder/40/40" class="rounded-circle me-2">
+                                    <div>
+                                        <h6 class="mb-0">Dr. Williams</h6>
+                                        <small class="text-muted">Python Programming</small>
+                                        <span class="status-indicator status-offline"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Chat Section -->
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="mb-0">Data Structures</h3>
+                                <small>Dr. Smith's Class</small>
+                            </div>
+                            <div>
+                                <button class="btn btn-light btn-sm me-2" data-bs-toggle="modal" data-bs-target="#videoModal">
+                                    <i class="fas fa-video"></i> Video
+                                </button>
+                                <button class="btn btn-light btn-sm">
+                                    <i class="fas fa-phone"></i> Call
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="messages"></div>
+                        <div class="input-group">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <input type="text" id="message" class="form-control" placeholder="Type your message...">
+                            <button class="btn btn-primary" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subject Resources -->
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-book fa-2x text-primary mb-2"></i>
+                                <h5>Course Materials</h5>
+                                <span class="badge bg-secondary">4 new</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-tasks fa-2x text-primary mb-2"></i>
+                                <h5>Assignments</h5>
+                                <span class="badge bg-danger">2 due</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                                <h5>Progress</h5>
+                                <span class="badge bg-success">85%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Current Subject Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h6>Upcoming Classes</h6>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Binary Trees</h6>
+                                        <small>Today, 2 PM</small>
+                                    </div>
+                                    <small class="text-muted">Dr. Smith</small>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Graph Algorithms</h6>
+                                        <small>Tomorrow, 10 AM</small>
+                                    </div>
+                                    <small class="text-muted">Dr. Smith</small>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6>Current Assignment</h6>
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6>Binary Search Tree Implementation</h6>
+                                    <small class="text-danger">Due: Tomorrow, 11:59 PM</small>
+                                    <div class="progress mt-2" style="height: 5px;">
+                                        <div class="progress-bar" role="progressbar" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h6>Resources</h6>
+                            <div class="list-group">
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Lecture Notes
+                                    <span class="badge bg-primary rounded-pill">New</span>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Practice Problems
+                                    <span class="badge bg-primary rounded-pill">5</span>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    Reference Materials
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Call Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Video Session - Data Structures</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="ratio ratio-16x9 mb-3">
+                        <img src="/api/placeholder/800/450" alt="Video placeholder" class="img-fluid rounded">
+                    </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-danger rounded-circle">
+                            <i class="fas fa-microphone-slash"></i>
+                        </button>
+                        <button class="btn btn-danger rounded-circle">
+                            <i class="fas fa-video-slash"></i>
+                        </button>
+                        <button class="btn btn-danger rounded-circle">
+                            <i class="fas fa-phone-slash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize WebSocket connection
+        const ws = new WebSocket('wss://chat-app-yttg.onrender.com');
+        const messageContainer = document.getElementById('messages');
+        const messageInput = document.getElementById('message');
+
+        // Handle incoming messages
+        ws.onmessage = async (event) => {
+            const msgData = event.data instanceof Blob ? await event.data.text() : event.data;
+            appendMessage(msgData, 'left');
+        };
+
+        // Handle WebSocket connection status
+        ws.onopen = () => {
+            appendMessage("Connected to chat server", 'left');
+        };
+
+        ws.onclose = () => {
+            appendMessage("Disconnected from chat server", 'left');
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+            appendMessage("Error connecting to chat server", 'left');
+        };
+
+        // Function to append messages to the chat
+        function appendMessage(text, position) {
+            const message = document.createElement('div');
+            message.classList.add('message', position);
+            message.textContent = text;
+            
+            messageContainer.appendChild(message);
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+
+        // Function to send messages
+        function sendMessage() {
+            const text = messageInput.value.trim();
+            if (text && ws.readyState === WebSocket.OPEN) {
+                ws.send(text);
+                appendMessage(text, 'right');
+                messageInput.value = '';
+            } else if (ws.readyState !== WebSocket.OPEN) {
+                appendMessage("Unable to send message - not connected to server", 'left');
+            }
+        }
+
+        // Event listeners
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Handle mobile viewport
+        messageInput.addEventListener('focus', () => {
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
+            );
+        });
+
+        messageInput.addEventListener('blur', () => {
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                'width=device-width, initial-scale=1.0'
+            );
+        });
+
+        // Subject switching functionality
+        document.querySelectorAll('.subject-nav .nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                // Remove active class from all links
+                document.querySelectorAll('.subject-nav .nav-link').forEach(l => 
+                    l.classList.remove('active')
+                );
+                // Add active class to clicked link
+                link.classList.add('active');
+                
+                // Update the chat header with the selected subject
+                const subject = link.textContent.trim();
+                const header = document.querySelector('.card-header h3');
+                if (header) {
+                    header.textContent = subject;
+                }
+
+                // Clear chat messages when switching subjects
+                messageContainer.innerHTML = '';
+                appendMessage(`Switched to ${subject} chat room`, 'left');
+            });
+        });
+
+        // Handle teacher card clicks
+        document.querySelectorAll('.teacher-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const teacherName = card.querySelector('h6').textContent;
+                const subject = card.querySelector('small').textContent;
+                const subHeader = document.querySelector('.card-header small');
+                if (subHeader) {
+                    subHeader.textContent = `${teacherName} - ${subject}`;
+                }
+            });
+        });
+    </script>
+
+
+{% endblock %}
